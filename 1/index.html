@@ -3,46 +3,70 @@
 <head>
   <meta charset="UTF-8">
   <title>Hardcoded Image Page</title>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
+
   <style>
     body {
-      font-family: Arial, sans-serif;
+      font-family: 'Lato', sans-serif;
       text-align: center;
       margin: 0;
       padding: 0;
       background-color: #f9f9f9;
+      color: #333;
     }
 
     h1 {
       font-size: 3em;
       margin: 40px 0;
+      font-weight: 700;
+      color: #222;
     }
 
     .section {
       margin: 40px auto;
-      padding: 20px;
+      padding: 30px 20px;
       width: 90%;
       max-width: 900px;
       background: #fff;
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
 
     .section h2 {
       margin-bottom: 20px;
+      font-size: 1.8em;
+      font-weight: 600;
+      color: #111;
     }
 
     .images {
       display: flex;
-      justify-content: center;   /* center images horizontally */
-      align-items: center;       /* align them vertically */
-      gap: 40px;                 /* even spacing between images */
+      justify-content: center;
+      align-items: center;
+      gap: 40px;
+      margin-bottom: 20px;
     }
 
     img {
       max-width: 300px;
       max-height: 250px;
-      border-radius: 8px;
-      flex-shrink: 0; /* prevents shrinking if container is small */
+      border-radius: 10px;
+      flex-shrink: 0;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+      transition: transform 0.2s ease;
+    }
+
+    img:hover {
+      transform: scale(1.05);
+    }
+
+    .description {
+      font-size: 1.1em;
+      line-height: 1.7;
+      max-width: 700px;
+      margin: 0 auto;
+      color: #555;
     }
   </style>
 </head>
@@ -52,25 +76,37 @@
   <div class="section">
     <h2>Part 1: Selfie: The Wrong Way vs. The Right Way</h2>
     <div class="images">
-      <img src="media/zoomed_face.png">
-      <img src="media/no_zoom_face.png">
+      <img src="media/zoomed_face.png" alt="Zoomed selfie">
+      <img src="media/no_zoom_face.png" alt="Proper selfie">
     </div>
-    <div>When a picture is taken up close, the lens uses a short focal length (wide angle), which exaggerates the relative distances between features. This causes the distortion in the first image.</div>
+    <div class="description">
+      When a picture is taken up close, the lens uses a short focal length (wide angle),
+      which exaggerates the relative distances between features. This causes the distortion
+      in the first image.
+    </div>
   </div>
 
   <div class="section">
     <h2>Part 2: Architectural Perspective Compression</h2>
     <div class="images">
-      <img src="media/zoomed_bg.png">
-      <img src="media/unzoomed_bg.png">
+      <img src="media/zoomed_bg.png" alt="Zoomed background">
+      <img src="media/unzoomed_bg.png" alt="Unzoomed background">
     </div>
-    <div>From far away with a zoom lens, distances appear compressed and the scene looks flattened, while from close up with a wide lens, depth is exaggerated and objects look farther apart.</div>
+    <div class="description">
+      From far away with a zoom lens, distances appear compressed and the scene looks flattened,
+      while from close up with a wide lens, depth is exaggerated and objects look farther apart.
+    </div>
   </div>
 
   <div class="section">
     <h2>Part 3: The Dolly Zoom</h2>
     <div class="images">
-      <img src="media/gif.gif">
+      <img src="media/gif.gif" alt="Dolly zoom effect">
+    </div>
+    <div class="description">
+      The dolly zoom combines moving the camera forward or backward with the opposite zoom adjustment.
+      This keeps the subject the same size in the frame while dramatically changing the background
+      perspective, creating a surreal “stretching” effect.
     </div>
   </div>
 </body>
