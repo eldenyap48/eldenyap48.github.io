@@ -34,41 +34,173 @@
   <div class="section">
     <h2>Approach</h2>
     <div class="description">
-      For all images, I first split each glass plate into three equal‑height channels (top→bottom = B, G, R). For low‑resolution images, I treated the blue channel as the fixed reference and aligned the red and green channels to it by exhaustively searching integer displacements (dx, dy) in a [−15, 15] window along both axes. For each shift, I computed a similarity score using the Normalized Cross‑Correlation (NCC); L2/SSD is also supported. Because borders tend to be misaligned, I scored only on the central 80% (crop 10% on each side). The best alignment maximizes NCC (or minimizes L2). After choosing the optimal shifts, I rolled the original G and R channels and stacked [R, G, B] to produce the final color image (saved as JPEG).
+      For all images, I first split each glass plate into three equal-height channels (top→bottom = B, G, R). For low-resolution images, I treated the blue channel as the fixed reference and aligned the red and green channels to it by exhaustively searching integer displacements (dx, dy) in a [-15, 15] window along both axes. For each shift, I computed a similarity score using the Normalized Cross-Correlation (NCC); L2/SSD is also supported. Because borders tend to be misaligned, I scored only on the central 80% (crop 10% on each side). The best alignment maximizes NCC (or minimizes L2). After choosing the optimal shifts, I rolled the original G and R channels and stacked [R, G, B] to produce the final color image (saved as JPEG).
       <br><br>
-      For the full‑resolution .tif plates, I used a recursive coarse‑to‑fine image pyramid (downscale ×0.5). The algorithm aligns at the coarsest level, doubles the estimated offsets as it ascends each level, and performs a small local refinement at the current resolution—significantly improving efficiency while preserving accuracy.
+      For the full-resolution .tif plates, I used a recursive coarse-to-fine image pyramid (downscale x0.5). The algorithm aligns at the coarsest level, doubles the estimated offsets as it ascends each level, and performs a small local refinement at the current resolution—significantly improving efficiency while preserving accuracy.
       <br><br>
-      For challenging cases like the Emir of Bukhara, where cross‑channel brightness differs, I aligned on Sobel edge features rather than raw intensities: I computed gradient magnitude for scoring with NCC but applied the resulting shifts to the original channels. Edges are more stable across filters, so NCC is more robust in this scenario.
+      For challenging cases like the Emir of Bukhara, where cross-channel brightness differs, I aligned on Sobel edge features rather than raw intensities: I computed gradient magnitude for scoring with NCC but applied the resulting shifts to the original channels. Edges are more stable across filters, so NCC is more robust in this scenario.
     </div>
   </div>
 
   <div class="section">
-    <h2>Single‑Scale Alignment (Low‑Resolution)</h2>
+    <h2>Single-Scale Alignment (Low-Resolution)</h2>
     <div class="images">
       <figure class="img-card">
-        <img src="media/out_single_cathedral.jpg" alt="Single‑scale: Cathedral.jpg" />
+        <img src="media/out_single_cathedral.jpg" alt="Single-scale: cathedral.jpg" />
         <figcaption>
           <strong>cathedral.jpg</strong><br>
-          G offsets: <em>(2, 5)</em>
+          G offsets: <em>(2, 5)</em><br>
           R offsets: <em>(3, 12)</em>
         </figcaption>
       </figure>
       <figure class="img-card">
-        <img src="media/out_single_monastery.jpg" alt="Single‑scale: Monastery.jpg" />
+        <img src="media/out_single_monastery.jpg" alt="Single-scale: monastery.jpg" />
         <figcaption>
           <strong>monastery.jpg</strong><br>
-          G offsets: <em>(2, -3)</em>
+          G offsets: <em>(2, -3)</em><br>
           R offsets: <em>(2, 3)</em>
         </figcaption>
       </figure>
       <figure class="img-card">
-        <img src="media/out_single_tobolsk.jpg" alt="Single‑scale: Tobolsk.jpg" />
+        <img src="media/out_single_tobolsk.jpg" alt="Single-scale: tobolsk.jpg" />
         <figcaption>
           <strong>tobolsk.jpg</strong><br>
-          G offsets: <em>(2, 3)</em>
+          G offsets: <em>(2, 3)</em><br>
           R offsets: <em>(3, 6)</em>
         </figcaption>
       </figure>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Multi-Scale Pyramid Alignment (High-Resolution)</h2>
+    <div class="images">
+      <figure class="img-card">
+        <img src="media/out_cathedral.jpg" alt="Multi-scale: cathedral.jpg" />
+        <figcaption>
+          <strong>cathedral.jpg</strong><br>
+          G offsets: <em>(2, 5)</em><br>
+          R offsets: <em>(3, 12)</em>
+        </figcaption>
+      </figure>
+
+      <figure class="img-card">
+        <img src="media/out_monastery.jpg" alt="Multi-scale: monastery.jpg" />
+        <figcaption>
+          <strong>monastery.jpg</strong><br>
+          G offsets: <em>(2, -3)</em><br>
+          R offsets: <em>(2, 3)</em>
+        </figcaption>
+      </figure>
+
+      <figure class="img-card">
+        <img src="media/out_tobolsk.jpg" alt="Multi-scale: tobolsk.jpg" />
+        <figcaption>
+          <strong>tobolsk.jpg</strong><br>
+          G offsets: <em>(2, 3)</em><br>
+          R offsets: <em>(3, 6)</em>
+        </figcaption>
+      </figure>
+
+      <figure class="img-card">
+        <img src="media/out_church.jpg" alt="Multi-scale: church.tif" />
+        <figcaption>
+          <strong>church.tif</strong><br>
+          G offsets: <em>(4, 25)</em><br>
+          R offsets: <em>(-4, 58)</em>
+        </figcaption>
+      </figure>
+
+      <figure class="img-card">
+        <img src="media/out_emir.jpg" alt="Multi-scale: emir.tif" />
+        <figcaption>
+          <strong>emir.tif</strong><br>
+          G offsets: <em>(24, 49)</em><br>
+          R offsets: <em>(40, 107)</em>
+        </figcaption>
+      </figure>
+
+      <figure class="img-card">
+        <img src="media/out_harvesters.jpg" alt="Multi-scale: harvesters.tif" />
+        <figcaption>
+          <strong>harvesters.tif</strong><br>
+          G offsets: <em>(17, 60)</em><br>
+          R offsets: <em>(13, 124)</em>
+        </figcaption>
+      </figure>
+
+      <figure class="img-card">
+        <img src="media/out_icon.jpg" alt="Multi-scale: icon.tif" />
+        <figcaption>
+          <strong>icon.tif</strong><br>
+          G offsets: <em>(17, 41)</em><br>
+          R offsets: <em>(23, 89)</em>
+        </figcaption>
+      </figure>
+
+      <figure class="img-card">
+        <img src="media/out_italil.jpg" alt="Multi-scale: italil.tif" />
+        <figcaption>
+          <strong>italil.tif</strong><br>
+          G offsets: <em>(21, 38)</em><br>
+          R offsets: <em>(35, 76)</em>
+        </figcaption>
+      </figure>
+
+      <figure class="img-card">
+        <img src="media/out_lastochikino.jpg" alt="Multi-scale: lastochikino.tif" />
+        <figcaption>
+          <strong>lastochikino.tif</strong><br>
+          G offsets: <em>(-2, -3)</em><br>
+          R offsets: <em>(-9, 75)</em>
+        </figcaption>
+      </figure>
+
+      <figure class="img-card">
+        <img src="media/out_lugano.jpg" alt="Multi-scale: lugano.tif" />
+        <figcaption>
+          <strong>lugano.tif</strong><br>
+          G offsets: <em>(-16, 41)</em><br>
+          R offsets: <em>(-29, 93)</em>
+        </figcaption>
+      </figure>
+
+      <figure class="img-card">
+        <img src="media/out_melons.jpg" alt="Multi-scale: melons.tif" />
+        <figcaption>
+          <strong>melons.tif</strong><br>
+          G offsets: <em>(11, 82)</em><br>
+          R offsets: <em>(13, 178)</em>
+        </figcaption>
+      </figure>
+
+      <figure class="img-card">
+        <img src="media/out_self_portrait.jpg" alt="Multi-scale: self_portrait.tif" />
+        <figcaption>
+          <strong>self_portrait.tif</strong><br>
+          G offsets: <em>(29, 79)</em><br>
+          R offsets: <em>(37, 176)</em>
+        </figcaption>
+      </figure>
+
+      <figure class="img-card">
+        <img src="media/out_siren.jpg" alt="Multi-scale: siren.tif" />
+        <figcaption>
+          <strong>siren.tif</strong><br>
+          G offsets: <em>(-6, 49)</em><br>
+          R offsets: <em>(-25, 96)</em>
+        </figcaption>
+      </figure>
+
+      <figure class="img-card">
+        <img src="media/out_three_generations.jpg" alt="Multi-scale: three_generations.tif" />
+        <figcaption>
+          <strong>three_generations.tif</strong><br>
+          G offsets: <em>(14, 53)</em><br>
+          R offsets: <em>(11, 112)</em>
+        </figcaption>
+      </figure>
+
     </div>
   </div>
 </body>
