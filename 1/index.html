@@ -246,5 +246,33 @@
 
     </div>
   </div>
+
+  <div class="section">
+    <h2>Bells and Whistles</h2>
+    <div class="description">
+      One main feature added is that in addition to aligning based on RGB similarity, we can also align based on edges. This is done by applying a Sobel filter to images before aligning. We can see an example of this in play with emir.tif
+    </div>
+    <div class="images">
+
+      <figure class="img-card">
+        <img src="media/out_emir_no_sobel.jpg" alt="No Sobel Filter: emir.tif" />
+        <figcaption>
+          <strong>emir.tif without Sobel filter</strong><br>
+          G offsets: <em>(24, 49)</em><br>
+          R offsets: <em>(-205, 141)</em>
+        </figcaption>
+      </figure>
+
+      <figure class="img-card">
+        <img src="media/out_emir.jpg" alt="With Sobel Filter: emir.tif" />
+        <figcaption>
+          <strong>emir.tif with Sobel filter</strong><br>
+          G offsets: <em>(24, 49)</em><br>
+          R offsets: <em>(40, 107)</em>
+        </figcaption>
+      </figure>
+
+    </div>
+  </div>
 </body>
 </html>
