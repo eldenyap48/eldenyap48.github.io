@@ -12,10 +12,12 @@
     .section { margin: 32px auto; padding: 26px 20px; width: 92%; max-width: 900px; background: #fff; border: 1px solid #ddd; border-radius: 12px; }
     .section h2 { margin: 0 0 14px; font-size: 1.6em; font-weight: 700; color: #111; }
     .description { font-size: 1.06em; line-height: 1.75; max-width: 760px; margin: 0 auto; color: #555; text-align: left; }
-    .images { display: flex; justify-content: center; align-items: center; gap: 32px; margin: 10px auto 0; flex-wrap: wrap; }
-    .images img { max-width: 300px; max-height: 240px; border-radius: 10px; box-shadow: 0 3px 10px rgba(0,0,0,0.12); transition: transform .2s ease; }
-    .images img:hover { transform: scale(1.04); }
-  </style>
+    .images { display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-start; gap: 24px; margin: 10px auto 0; padding: 0 8px; }
+    .images img { width: 100%; height: auto; display: block; border-radius: 10px; box-shadow: 0 3px 10px rgba(0,0,0,0.12); transition: transform .2s ease; }
+    .images img:hover { transform: scale(1.03); }
+  .img-card { width: min(300px, 100%); background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); overflow: hidden; }
+.img-card figcaption { padding: 8px 10px; font-size: 0.95em; color: #555; border-top: 1px solid #eee; text-align: center; }
+</style>
 </head>
 <body>
   <a href="https://eldenyap48.github.io/" class="back-link">← Back</a>
@@ -43,9 +45,27 @@
   <div class="section">
     <h2>Single‑Scale Alignment (Low‑Resolution)</h2>
     <div class="images">
-      <img src="media/out_single_cathedral.jpg" alt="Single‑scale result: Cathedral" />
-      <img src="media/out_single_monastery.jpg" alt="Single‑scale result: Monastery" />
-      <img src="media/out_single_tobolsk.jpg" alt="Single‑scale result: Tobolsk" />
+      <figure class="img-card">
+        <img src="media/out_single_cathedral.jpg" alt="Single‑scale: Cathedral" />
+        <figcaption>
+          <strong>Cathedral</strong><br>
+          G offsets: (dx, dy) = <em>fill</em> · R offsets: (dx, dy) = <em>fill</em>
+        </figcaption>
+      </figure>
+      <figure class="img-card">
+        <img src="media/out_single_monastery.jpg" alt="Single‑scale: Monastery" />
+        <figcaption>
+          <strong>Monastery</strong><br>
+          G offsets: (dx, dy) = <em>fill</em> · R offsets: (dx, dy) = <em>fill</em>
+        </figcaption>
+      </figure>
+      <figure class="img-card">
+        <img src="media/out_single_tobolsk.jpg" alt="Single‑scale: Tobolsk" />
+        <figcaption>
+          <strong>Tobolsk</strong><br>
+          G offsets: (dx, dy) = <em>fill</em> · R offsets: (dx, dy) = <em>fill</em>
+        </figcaption>
+      </figure>
     </div>
   </div>
 </body>
