@@ -1,46 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <title>CS 180 Project 1: Prokudin‑Gorskii Colorization</title>
   <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Lato', sans-serif; text-align: center; margin: 0; padding: 0; background: #f9f9f9; color: #333; }
+    .back-link { position: absolute; top: 20px; left: 20px; padding: 10px 18px; font-size: 1em; font-weight: 600; background: #eee; border-radius: 6px; text-decoration: none; color: #333; box-shadow: 0 2px 6px rgba(0,0,0,0.15); transition: background .2s ease, color .2s ease; }
+    .back-link:hover { background: #ddd; color: #000; }
+    h1 { font-size: 2.6em; margin: 80px 0 36px; font-weight: 700; color: #222; padding: 0 16px; }
+    .section { margin: 32px auto; padding: 26px 20px; width: 92%; max-width: 900px; background: #fff; border: 1px solid #ddd; border-radius: 12px; }
+    .section h2 { margin: 0 0 14px; font-size: 1.6em; font-weight: 700; color: #111; }
+    .description { font-size: 1.06em; line-height: 1.75; max-width: 760px; margin: 0 auto; color: #555; text-align: left; }
+    .images { display: flex; justify-content: center; align-items: center; gap: 32px; margin: 10px auto 0; flex-wrap: wrap; }
+    .images img { max-width: 300px; max-height: 240px; border-radius: 10px; box-shadow: 0 3px 10px rgba(0,0,0,0.12); transition: transform .2s ease; }
+    .images img:hover { transform: scale(1.04); }
+  </style>
 </head>
 <body>
   <a href="https://eldenyap48.github.io/" class="back-link">← Back</a>
 
-  <h1>CS 180 Project 1: Images of the Russian Empire -- Colorizing the Prokudin-Gorskii Photo Collection</h1>
+  <h1>CS 180 Project 1: Images of the Russian Empire — Colorizing the Prokudin‑Gorskii Photo Collection</h1>
 
   <div class="section">
     <h2>Project Overview</h2>
     <div class="description">
-      In this project, we take the digitized Prokudin-Gorskii glass plate images and, using image processing techniques, automatically produce a color image with as few visual artifacts as possible.
+      In this project, I reconstruct color photographs from the Prokudin‑Gorskii glass plates by splitting each plate into B, G, and R channels, aligning them, and stacking to produce an RGB image with minimal artifacts.
     </div>
   </div>
 
   <div class="section">
     <h2>Approach</h2>
     <div class="description">
-      For all images, I first split each glass plate into three equal-height channels (B, G, R).
-      For low-resolution images, I treated the blue channel as the fixed reference and aligned the red and green channels to it by exhaustively searching integer displacements (dx, dy) in a [-15, 15] window along both the x and y axes.
-      For each (dx, dy) shift, I computed a similarity score using the Normalized Cross Correlation Coefficient (NCC), although the helper functions also support the usage of the L2 norm.
-      Since the borders of the photograph will have misaligned channels, only the central 80% of the image was used for the score calculation, and the best alignment maximizes NCC (or minimizes the L2 score).
-      After choosing the optimal shifts, I rolled the original G and R channels by those offsets and stacked [R, G, B] to produce the final color image (saved as JPEG).
-
-      For the full-resolution glass plate images (.tif files), I used a recursive coarse-to-fine image pyramid with a downscale factor of 0.5.
-      The algorithm aligns at the coarsest level, doubles the estimated offsets as it ascends at each level, and performs a small local refinement window at the current resolution.
-      This drastically reduces runtime while maintaining accuracy for large image files.
-
-      For difficult cases like the Emir of Bukhara, where cross-channel brightness differs, I aligned on edge features rather than raw intensities.
-      I applied a Sobel filter to compute gradient magnitude for scoring with NCC but still applied the resulting shifts to the original channels.
-      Edges are more stable across color channels, making NCC more robust in this scenario.
+      For all images, I first split each glass plate into three equal‑height channels (top→bottom = B, G, R). For low‑resolution images, I treated the blue channel as the fixed reference and aligned the red and green channels to it by exhaustively searching integer displacements (dx, dy) in a [−15, 15] window along both axes. For each shift, I computed a similarity score using the Normalized Cross‑Correlation (NCC); L2/SSD is also supported. Because borders tend to be misaligned, I scored only on the central 80% (crop 10% on each side). The best alignment maximizes NCC (or minimizes L2). After choosing the optimal shifts, I rolled the original G and R channels and stacked [R, G, B] to produce the final color image (saved as JPEG).
+      <br><br>
+      For the full‑resolution .tif plates, I used a recursive coarse‑to‑fine image pyramid (downscale ×0.5). The algorithm aligns at the coarsest level, doubles the estimated offsets as it ascends each level, and performs a small local refinement at the current resolution—significantly improving efficiency while preserving accuracy.
+      <br><br>
+      For challenging cases like the Emir of Bukhara, where cross‑channel brightness differs, I aligned on Sobel edge features rather than raw intensities: I computed gradient magnitude for scoring with NCC but applied the resulting shifts to the original channels. Edges are more stable across filters, so NCC is more robust in this scenario.
     </div>
   </div>
 
   <div class="section">
-    <h2>Single-Scale Alignment on Low-Resolution Images</h2>
+    <h2>Single‑Scale Alignment (Low‑Resolution)</h2>
     <div class="images">
-      <img src="media/out_single_cathedral.jpg">
-      <img src="media/out_single_monastery.jpg">
-      <img src="media/out_single_tobolsk.jpg">
+      <img src="media/out_single_cathedral.jpg" alt="Single‑scale result: Cathedral" />
+      <img src="media/out_single_monastery.jpg" alt="Single‑scale result: Monastery" />
+      <img src="media/out_single_tobolsk.jpg" alt="Single‑scale result: Tobolsk" />
     </div>
   </div>
 </body>
