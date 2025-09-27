@@ -87,9 +87,11 @@
       color: #555;
     }
 
-    .big-image {
-      max-width: 1000px;
-      max-height: 800px;
+    .big-img {
+      width: 1000px;   /* force scale to 1000px wide */
+      height: auto;    /* keep aspect ratio */
+      margin-top: 10px;
+      margin-bottom: 10px;
     }
   </style>
 </head>
@@ -125,6 +127,12 @@
     </div>
     <div class="images">
       <img src="media/cameraman.png" alt="Convolved Cameraman" class="big-img">
+    </div>
+    <div class="description">
+      To turn the gradient magnitude image into an edge image, I binarize the gradient magnitude image by setting a threshold of 0.06, allowing us to remove most of the noise and preserve the real edges.
+    </div>
+    <div class="images">
+      <img src="media/cameraman_edge.png" alt="Cameraman edge image">
     </div>
   </div>
 
