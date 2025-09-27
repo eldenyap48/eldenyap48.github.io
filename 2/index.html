@@ -86,6 +86,11 @@
       margin: 0 auto;
       color: #555;
     }
+
+    .big-image {
+      max-width: 1000px;
+      max-height: 800px;
+    }
   </style>
 </head>
 <body>
@@ -109,7 +114,17 @@
       Below are images of myself convolved with the box filter and the finite difference operators.
     </div>
     <div class="images">
-      <img src="media/elden.png" alt="Convolved personal image">
+      <img src="media/elden.png" alt="Convolved personal image" class="big-img">
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>Part 1.2: Finite Difference Operator</h3>
+    <div class="description">
+      I convolved the cameraman image with finite difference operators D_x and D_y, and computed the gradient magnitude image as shown below.
+    </div>
+    <div class="images">
+      <img src="media/cameraman.png" alt="Convolved Cameraman" class="big-img">
     </div>
   </div>
 
