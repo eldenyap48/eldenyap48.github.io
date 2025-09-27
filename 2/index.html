@@ -129,7 +129,7 @@
       <img src="media/cameraman.png" alt="Convolved Cameraman" class="big-img">
     </div>
     <div class="description">
-      To turn the gradient magnitude image into an edge image, I binarize the gradient magnitude image by setting a threshold of 0.06, allowing us to remove most of the noise and preserve the real edges.
+      To turn the gradient magnitude image into an edge image, I binarized the gradient magnitude image by setting a threshold of 0.06, allowing me to remove most of the noise and preserve the real edges. I was able to preserve all the edges in the buildings behind the cameraman and in the grass, while removing most of the noise in the sky.
     </div>
     <div class="images">
       <img src="media/cameraman_edge.png" alt="Cameraman edge image">
@@ -142,9 +142,9 @@
       <img src="media/dog_filter.png" alt="Convolution with DoG Filter">
     </div>
     <div class="description">
-      I blurred the original image using a Gaussian filter and repeated the procedure above. By using the Gaussian filter G as a smoothing operator, much of the noise could be removed and we can also set the threshold to a lower value of 0.04. The edges in the binarized edge image are also much thicker.
+      I applied Gaussian smoothing to the cameraman image and repeated the procedure above. This reduces the noise and allowed me to set a lower threshold of 0.04. The edges in the binarized edge image are also much thicker.
 
-      Next, I did the same thing with a single convolution by creating a derivative of Gaussian filters. The resulting edge image is the same as before as shown above.
+      I also did the same thing by building DoG filters (visualized above) and applying them to the original image. The resulting edge image is the same as when I applied Gaussian smoothing.
     </div>
   </div>
 
@@ -152,6 +152,9 @@
   
   <div class="section">
     <h3>Part 2.1: Image "Sharpening"</h3>
+    <div class="description">
+      I first apply a low pass Gaussian blur filter to the image that retains only the low frequencies. I then subtract the result from the original image to get the high frequencies of the image. Finally, I add a scalar multiple (alpha) of the high pass image back to the original image to get the sharpened image. This was also done in a single convolution operation called the unsharp mask filter. The filter is simply (1+alpha) * identity - alpha * gaussian, where the identity filter is simply a filter with 0s everywhere and a 1 in the middle. 
+    </div>
     <div class="images">
       <img src="media/taj.png" class="big-img">
     </div>
@@ -167,6 +170,9 @@
     <div class="images">
       <img src="media/torres.png" class="big-img">
     </div>
+    <div class="description">
+      When we increase alpha, the sharpening amount, the edges and textures become more pronounced, but halos around strong edges also start to appear. It also increases contrast around edges, and alpha at high values can cause the exaggerated contrast to look unnatural.
+    </div>
   </div>
 
   <div class="section">
@@ -178,13 +184,16 @@
       <img src="media/nathan_labubu.png" class="big-img">
     </div>
     <div class="images">
+      <img src="media/catface.png" class="big-img">
+    </div>
+    <div class="images">
       <img src="media/barbie_rock.png" class="big-img">
     </div>
     <div class="images">
       <img src="media/sloth_dog.png" class="big-img">
     </div>
     <div class="description">
-      For the first hybrid image, here is the process illustrated through frequency analysis:
+      For the first hybrid image, the entire frequency analysis process is show below. The sigma of the Gaussian (frequency cutoff) for the high pass and low pass filters are 6 and 10 respectively.
     </div>
     <div class="images">
       <img src="media/nathan_labubu_breakdown.png" class="big-img">
@@ -194,7 +203,7 @@
   <div class="section">
     <h3>Part 2.3: Gaussian and Laplacian Stacks</h3>
     <div class="description">
-      I implemented a Gaussian and a Laplacian stack, and applied them to the Oraple:
+      I implemented functions to create a Gaussian and a Laplacian stack, and applied them to the Oraple:
     </div>
     <div class="images">
       <img src="media/oraple_laplacian.png" class="big-img">
@@ -210,6 +219,12 @@
       <img src="media/oraple.png">
       <img src="media/treeface.png">
       <img src="media/kapybarasky.png">
+    </div>
+    <div class="description">
+      Here is an illustration of the process used to create the oraple
+    </div>
+    <div class="images">
+      <img src="media/oraple_illustration.png">
     </div>
     <div class="description">
       Here is an illustration of the process used to create one of the blended images
