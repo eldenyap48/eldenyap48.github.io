@@ -82,7 +82,7 @@
     .description {
       font-size: 1.1em;
       line-height: 1.7;
-      max-width: 700px;
+      max-width: 1200px;
       margin: 0 auto;
       color: #555;
     }
@@ -102,9 +102,14 @@
       <img src="media/convolve2d_2loops.png" alt="Convolve 2D 2-loop implementation">
     </div>
     <div class="description">
-      When a picture is taken up close, the lens uses a short focal length (wide angle),
-      which exaggerates the relative distances between features. This causes the distortion
-      in the first image.
+      I implemented 2D convolution using a 4-loop function (left) and a 2-loop function (right). The 4-loop function is the slowest because it loops over every single pixel in the image and the kernel. The 2-loop version is faster since it uses Numpy's vectorized operations in the innermost loop. However, both versions are still significantly slower than scipy.signal.convolve2d, which is implemented in optimized C. 
+
+      The functions I implemented always pad the edges with zeros. This could cause artificial dark edges. In contrast, scipy.signal.convolve2d allows users to choose a boundary condition ('fill', 'symm', 'wrap') which could help produce cleaner results at the borders.
+
+      Below are images of myself convolved with the box filter and the finite difference operators.
+    </div>
+    <div class="images">
+      <img src="media/elden.png" alt="Convolved personal image">
     </div>
   </div>
 
