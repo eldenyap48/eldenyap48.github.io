@@ -126,6 +126,16 @@
         <img src="media/home_corr.png" class="big-img">
         <img src="media/home_homo.png" class="big-img">
     </div>
+    <div class="description">
+        The system of equations is <code>Ah = b</code>
+
+        For each pair of correspondences (x, y) -> (x', y'):
+
+        x' = (h<sub>0</sub>x + h<sub>1</sub>y + h<sub>2</sub>) / (h<sub>6</sub>x + h<sub>7</sub>y + 1)
+        y' = (h<sub>3</sub>x + h<sub>4</sub>y + h<sub>5</sub>) / (h<sub>6</sub>x + h<sub>7</sub>y + 1)
+
+        This sets up a linear system of n equations, where n >= 8. I then solved it using least-squares.
+    </div>
   </div>
 
   <div class="section">
@@ -139,6 +149,9 @@
     <div class="images">
         <img src="media/rectify_2.png" class="big-img">
     </div>
+    <div class="description">
+        Nearest Neighbor is fast but produces blocky or jagged results. Bilinear interpolation yields a smoother and more realistic transition but is slower.
+    </div>
   </div>
 
   <div class="section">
@@ -150,6 +163,9 @@
         <img src="media/mosaic_1.png" class="big-img">
         <img src="media/mosaic_2.png" class="big-img">
         <img src="media/mosaic_3.png" class="big-img">
+    </div>
+    <div class="description">
+        I created three image mosaics by selecting corresponding points between overlapping images, computing homographies, and warping both images onto a shared canvas. Each image was inverse-warped using both nearest-neighbor and bilinear interpolation, with bilinear interpolation producing smoother transitions. To reduce visible seams, I applied simple feathering - generating soft alpha masks and blending overlapping regions through weighted averaging. This approach helps minimize edge artifacts and ensures a more seamless, natural-looking mosaic.
     </div>
   </div>
 
