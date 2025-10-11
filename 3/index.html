@@ -116,10 +116,22 @@
   <div class="section">
     <h3>A.2: Recover Homographies</h3>
     <div class="description">
-      I implemented the <code>computeH(im1_pts, im2_pts)</code> functions
+        I implemented the <code>computeH(im1_pts, im2_pts)</code> functions to calculate the homography from the first image to the second
     </div>
     <div class="images">
-      
+        <img src="media/balcony_corr.png">
+        <img src="media/home_corr.png">
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>A.3: Warp the Images</h3>
+    <div class="description">
+        I implemented the <code>warpImageNearestNeighbor(im,H)</code> and <code>warpImageBilinear(im,H)</code> using inverse warping. To test the code, I applied it to 2 images for rectification.
+    </div>
+    <div class="images">
+        <img src="media/rectify_1.png">
+        <img src="media/rectify_2.png">
     </div>
   </div>
 
