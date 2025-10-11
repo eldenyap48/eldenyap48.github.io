@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>CS 180 Project 3: Image Warping and Mosaicing</title>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: 'Lato', sans-serif;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+      background-color: #f9f9f9;
+      color: #333;
+    }
+
+    .back-link {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      padding: 10px 18px;
+      font-size: 1em;
+      font-weight: 600;
+      background-color: #eee;
+      border-radius: 6px;
+      text-decoration: none;
+      color: #333;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+
+    .back-link:hover {
+      background-color: #ddd;
+      color: #000;
+    }
+
+    h1 {
+      font-size: 3em;
+      margin: 60px 0 40px;
+      font-weight: 700;
+      color: #222;
+    }
+
+    .section {
+      margin: 10px auto;
+      padding: 10px 5px;
+      width: 90%;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .section h3 {
+      margin-bottom: 20px;
+      font-size: 1.8em;
+      font-weight: 600;
+      color: #111;
+    }
+
+    .images {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 40px;
+      margin-bottom: 20px;
+    }
+
+    img {
+      max-width: 600px;
+      max-height: 500px;
+      border-radius: 10px;
+      flex-shrink: 0;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+      transition: transform 0.2s ease;
+    }
+
+    img:hover {
+      transform: scale(1.05);
+    }
+
+    .description {
+      font-size: 1.1em;
+      line-height: 1.7;
+      max-width: 1200px;
+      margin: 0 auto;
+      color: #555;
+    }
+
+    .big-img {
+      max-width: 90%;
+      height: auto;
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+  <a href="https://eldenyap48.github.io/" class="back-link">← Back</a>
+
+  <h1>CS 180 Project 3: Image Warping and Mosaicing</h1>
+
+  <div class="section">
+    <h3>A.1: Shoot the Pictures</h3>
+    <div class="description">
+      I captured multiple sets of photographs with projective transformations by fixing the center of project (COP) and rotating the camera while capturing photos.
+    </div>
+    <div class="images">
+      <img src="media/balcony_1.jpg">
+      <img src="media/balcony_2.jpg">
+      <img src="media/home_1.jpg">
+      <img src="media/home_2.jpg">
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>Part 1.2: Finite Difference Operator</h3>
+    <div class="description">
+      I convolved the cameraman image with finite difference operators D_x and D_y, and computed the gradient magnitude image as shown below.
+    </div>
+    <div class="images">
+      <img src="media/cameraman.png" alt="Convolved Cameraman" class="big-img">
+    </div>
+    <div class="description">
+      To turn the gradient magnitude image into an edge image, I binarized the gradient magnitude image by setting a threshold of 0.06, allowing me to remove most of the noise and preserve the real edges. I was able to preserve all the edges in the buildings behind the cameraman and in the grass, while removing most of the noise in the sky.
+    </div>
+    <div class="images">
+      <img src="media/cameraman_edge.png" alt="Cameraman edge image">
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>Part 1.3: Derivative of Gaussian (DoG) Filter</h3>
+    <div class="images">
+      <img src="media/dog_filter.png" alt="Convolution with DoG Filter">
+    </div>
+    <div class="description">
+      I applied Gaussian smoothing to the cameraman image and repeated the procedure above. This reduces the noise and allowed me to set a lower threshold of 0.04. The edges in the binarized edge image are also much thicker.
+
+      I also did the same thing by building DoG filters (visualized above) and applying them to the original image. The resulting edge image is the same as when I applied Gaussian smoothing.
+    </div>
+  </div>
+  
+  <div class="section">
+    <h3>Part 2.1: Image "Sharpening"</h3>
+    <div class="description">
+      I first apply a low pass Gaussian blur filter to the image that retains only the low frequencies. I then subtract the result from the original image to get the high frequencies of the image. Finally, I add a scalar multiple (alpha) of the high pass image back to the original image to get the sharpened image. This was also done in a single convolution operation called the unsharp mask filter. The filter is simply (1+alpha) * identity - alpha * gaussian, where the identity filter is simply a filter with 0s everywhere and a 1 in the middle. 
+    </div>
+    <div class="images">
+      <img src="media/taj.png" class="big-img">
+    </div>
+    <div class="description">
+      Here are some other images that are sharpened using the unsharp mask filter:
+    </div>
+    <div class="images">
+      <img src="media/machupicchu.png" class="big-img">
+    </div>
+    <div class="images">
+      <img src="media/monteverde.png" class="big-img">
+    </div>
+    <div class="images">
+      <img src="media/torres.png" class="big-img">
+    </div>
+    <div class="description">
+      When we increase alpha, the sharpening amount, the edges and textures become more pronounced, but halos around strong edges also start to appear. It also increases contrast around edges, and alpha at high values can cause the exaggerated contrast to look unnatural.
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>Part 2.2: Hybrid Images</h3>
+    <div class="description">
+      Here are some hybrid images:
+    </div>
+    <div class="images">
+      <img src="media/nathan_labubu.png" class="big-img">
+    </div>
+    <div class="images">
+      <img src="media/catface.png" class="big-img">
+    </div>
+    <div class="images">
+      <img src="media/barbie_rock.png" class="big-img">
+    </div>
+    <div class="images">
+      <img src="media/sloth_dog.png" class="big-img">
+    </div>
+    <div class="description">
+      For the first hybrid image, the entire frequency analysis process is show below. The sigma of the Gaussian (frequency cutoff) for the high pass and low pass filters are 6 and 10 respectively.
+    </div>
+    <div class="images">
+      <img src="media/nathan_labubu_breakdown.png" class="big-img">
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>Part 2.3: Gaussian and Laplacian Stacks</h3>
+    <div class="description">
+      I implemented functions to create a Gaussian and a Laplacian stack, and applied them to the Oraple:
+    </div>
+    <div class="images">
+      <img src="media/oraple_laplacian.png" class="big-img">
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>Part 2.4: Multiresolution Blending</h3>
+    <div class="description">
+      Here are some images that have been blended together using both regular and irregular masks
+    </div>
+    <div class="images">
+      <img src="media/oraple.png">
+      <img src="media/treeface.png">
+      <img src="media/kapybarasky.png">
+    </div>
+    <div class="description">
+      Here is an illustration of the process used to create the oraple
+    </div>
+    <div class="images">
+      <img src="media/oraple_illustration.png" class="big-img">
+    </div>
+    <div class="description">
+      Here is an illustration of the process used to create one of the blended images
+    </div>
+    <div class="images">
+      <img src="media/treeface_laplacian.png" class="big-img">
+    </div>
+  </div>
+
+</body>
+</html>
