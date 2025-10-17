@@ -188,5 +188,39 @@
     </div>
   </div>
 
+  <div class="section">
+    <h3>B.2: Feature Descriptor Extraction</h3>
+    <div class="description">
+        We extract compact, axis-aligned 8x8 descriptors around each Harris corner. Each descriptor is sampled from a larger 40x40 window, then bias/gain normalized (zero mean, unit variance) to reduce lighting effects.
+    </div>
+    <div class="images">
+        <img src="feat_desc.png">
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>B.3: Feature Matching</h3>
+    <div class="description">
+        We match features by comparing their 8x8 descriptors and applying Lowe's ratio test: a match is accepted only if the nearest neighbor is significantly closer than the second nearest. This filters out ambiguous pairs and keeps reliable correspondences. Below, we visualize the resulting matches across each image pair.
+    </div>
+    <div class="images">
+        <img src="balcony_matched_features.png">
+        <img src="everest_matched_features.png">
+        <img src="home_matched_features.png">
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>B.4: RANSAC for Robust Homography</h3>
+    <div class="description">
+        We estimate homographies with 4-point RANSAC: repeatedly sample 4 correspondences, solve for H, score by reprojection error to keep a consensus of inliers, then refit H on those inliers for stability. Using the recovered H, we warp and blend images to form panaromas. Below, we show manual vs. automatic stitching side-by-side for several mosaics.
+    </div>
+    <div class="images">
+        <img src="balcony_mosaics.png">
+        <img src="everest_mosaics.png">
+        <img src="home_mosaics.png">
+    </div>
+  </div>
+
 </body>
 </html>
