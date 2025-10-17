@@ -98,7 +98,9 @@
 <body>
   <a href="https://eldenyap48.github.io/" class="back-link">← Back</a>
 
-  <h1>CS 180 Project 3: Image Warping and Mosaicing</h1>
+  <h1>CS 180 Project 3A</h1>
+
+  <h1>Image Warping and Mosaicing</h1>
 
   <div class="section">
     <h3>A.1: Shoot the Pictures</h3>
@@ -170,6 +172,19 @@
     </div>
     <div class="description">
         I created three image mosaics by selecting corresponding points between overlapping images, computing homographies, and warping both images onto a shared canvas. Each image was inverse-warped using both nearest-neighbor and bilinear interpolation, with bilinear interpolation producing smoother transitions. To reduce visible seams, I applied simple feathering - generating soft alpha masks and blending overlapping regions through weighted averaging. This approach helps minimize edge artifacts and ensures a more seamless, natural-looking mosaic.
+    </div>
+  </div>
+
+  <h1>Feature Matching for Autostitching</h1>
+
+  <div class="section">
+    <h3>B.1: Harris Corner Detection</h3>
+    <div class="description">
+        Harris corners are visualized on the images, both before and after applying ANMS.
+    </div>
+    <div class="images">
+        <img src="media/harris_no_ams.png">
+        <img src="media/harris_with_ams.png">
     </div>
   </div>
 
