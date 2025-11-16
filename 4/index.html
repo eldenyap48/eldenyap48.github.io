@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>CS 180 Project 4: Neural Radiance Field!</title>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: 'Lato', sans-serif;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+      background-color: #f9f9f9;
+      color: #333;
+    }
+
+    .back-link {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      padding: 10px 18px;
+      font-size: 1em;
+      font-weight: 600;
+      background-color: #eee;
+      border-radius: 6px;
+      text-decoration: none;
+      color: #333;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+
+    .back-link:hover {
+      background-color: #ddd;
+      color: #000;
+    }
+
+    h1 {
+      font-size: 3em;
+      margin: 60px 0 40px;
+      font-weight: 700;
+      color: #222;
+    }
+
+    .section {
+      margin: 10px auto;
+      padding: 10px 5px;
+      width: 90%;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .section h3 {
+      margin-bottom: 20px;
+      font-size: 1.8em;
+      font-weight: 600;
+      color: #111;
+    }
+
+    .images {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 40px;
+      margin-bottom: 20px;
+    }
+
+    img {
+      max-width: 600px;
+      max-height: 500px;
+      border-radius: 10px;
+      flex-shrink: 0;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+      transition: transform 0.2s ease;
+    }
+
+    img:hover {
+      transform: scale(1.05);
+    }
+
+    .description {
+      font-size: 1.1em;
+      line-height: 1.7;
+      max-width: 1200px;
+      margin: 30px auto;
+      color: #555;
+    }
+
+    .big-img {
+      max-width: 90%;
+      height: auto;
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+  <a href="https://eldenyap48.github.io/" class="back-link">← Back</a>
+
+  <h1>CS 180 Project 4: </h1>
+
+  <div class="section">
+    <h3>Part 0: Calibrating Your Camera and Capturing a 3D Scan</h3>
+    <div class="description">
+      First, I calculated camera intrinsics (K) and distortion coefficients. Next, I did a 3D object scan and calculated the camera poses for each of the images. Finally, I was able to undistort the image and create a dataset. Below are 2 screenshots of my cloud of cameras in Viser showing the camera frustums' poses and images.
+    </div>
+    <div class="images">
+      <img src="media/viser_0.png">
+      <img src="media/viser_1.png">
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>A.2: Recover Homographies</h3>
+    <div class="description">
+        I implemented the <code>computeH(im1_pts, im2_pts)</code> functions to calculate the homography from the first image to the second
+    </div>
+    <div class="images">
+        <img src="media/balcony_corr.png" class="big-img">
+        <img src="media/balcony_homo.png" class="big-img">
+    </div>
+    <div class="images">
+        <img src="media/home_corr.png" class="big-img">
+        <img src="media/home_homo.png" class="big-img">
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>A.3: Warp the Images</h3>
+    <div class="description">
+        I implemented the <code>warpImageNearestNeighbor(im,H)</code> and <code>warpImageBilinear(im,H)</code> using inverse warping. To test the code, I applied it to 2 images for rectification.
+    </div>
+    <div class="images">
+        <img src="media/rectify_1.png" class="big-img">
+    </div>
+    <div class="images">
+        <img src="media/rectify_2.png" class="big-img">
+    </div>
+    <div class="description">
+        Nearest Neighbor is fast but produces blocky or jagged results. Bilinear interpolation yields a smoother and more realistic transition but is slower.
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>A.4: Blend the Images into a Mosaic</h3>
+    <div class="description">
+        Using the functions implemented above, I was able to create the following mosaics.
+    </div>
+    <div class="images">
+        <img src="media/mosaic_1.png" class="big-img">
+    </div>
+    <div class="images">
+        <img src="media/mosaic_2.png" class="big-img">
+    </div>
+    <div class="images">
+        <img src="media/mosaic_3.png" class="big-img">
+    </div>
+    <div class="description">
+        I created three image mosaics by selecting corresponding points between overlapping images, computing homographies, and warping both images onto a shared canvas. Each image was inverse-warped using both nearest-neighbor and bilinear interpolation, with bilinear interpolation producing smoother transitions. To reduce visible seams, I applied simple feathering - generating soft alpha masks and blending overlapping regions through weighted averaging. This approach helps minimize edge artifacts and ensures a more seamless, natural-looking mosaic.
+    </div>
+  </div>
+
+  <h1>Feature Matching for Autostitching</h1>
+
+  <div class="section">
+    <h3>B.1: Harris Corner Detection</h3>
+    <div class="description">
+        Harris corners are visualized on the images, both before and after applying ANMS.
+    </div>
+    <div class="images">
+        <img src="media/harris_no_ams.png">
+        <img src="media/harris_with_ams.png">
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>B.2: Feature Descriptor Extraction</h3>
+    <div class="description">
+        We extract compact, axis-aligned 8x8 descriptors around each Harris corner. Each descriptor is sampled from a larger 40x40 window, then bias/gain normalized (zero mean, unit variance) to reduce lighting effects.
+    </div>
+    <div class="images">
+        <img src="media/feat_desc.png" class="big-img">
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>B.3: Feature Matching</h3>
+    <div class="description">
+        We match features by comparing their 8x8 descriptors and applying Lowe's ratio test: a match is accepted only if the nearest neighbor is significantly closer than the second nearest. This filters out ambiguous pairs and keeps reliable correspondences. Below, we visualize the resulting matches across each image pair.
+    </div>
+    <div class="images">
+        <img src="media/balcony_matched_features.png" class="big-img">
+    </div>
+    <div class="images">
+        <img src="media/everest_matched_features.png" class="big-img">
+    </div>
+    <div class="images">
+        <img src="media/home_matched_features.png" class="big-img">
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>B.4: RANSAC for Robust Homography</h3>
+    <div class="description">
+        We estimate homographies with 4-point RANSAC: repeatedly sample 4 correspondences, solve for H, score by reprojection error to keep a consensus of inliers, then refit H on those inliers for stability. Using the recovered H, we warp and blend images to form panaromas. Below, we show manual vs. automatic stitching side-by-side for several mosaics.
+    </div>
+    <div class="images">
+        <img src="media/balcony_mosaics.png">
+    </div>
+    <div class="images">
+        <img src="media/everest_mosaics.png">
+    </div>
+    <div class="images">
+        <img src="media/home_mosaics.png">
+    </div>
+    <div class="description">
+        Automatic stitching produces cleaner, more consistent panoramas since it removes human alignment errors and optimizes overlaps mathematically. As a result, the final images are smoother and exhibit noticeably less geometric distortion.
+    </div>
+  </div>
+
+</body>
+</html>
