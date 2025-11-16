@@ -129,7 +129,7 @@
       <img src="media/fox_grid.png" class="big-img">
     </div>
     <div class="description">
-        The PSNR curve for training on the fox image is shown as follows
+        The PSNR curve for training on the machu picchu image is shown as follows
     </div>
     <div class="images">
       <img src="media/mp_psnr.png" class="big-img">
@@ -137,7 +137,7 @@
   </div>
 
   <div class="section">
-    <h3>A.3: Warp the Images</h3>
+    <h3>Part 2: Fit a Neural Radiance Field from Multi-view Images</h3>
     <div class="description">
         I implemented the <code>warpImageNearestNeighbor(im,H)</code> and <code>warpImageBilinear(im,H)</code> using inverse warping. To test the code, I applied it to 2 images for rectification.
     </div>
@@ -149,83 +149,6 @@
     </div>
     <div class="description">
         Nearest Neighbor is fast but produces blocky or jagged results. Bilinear interpolation yields a smoother and more realistic transition but is slower.
-    </div>
-  </div>
-
-  <div class="section">
-    <h3>A.4: Blend the Images into a Mosaic</h3>
-    <div class="description">
-        Using the functions implemented above, I was able to create the following mosaics.
-    </div>
-    <div class="images">
-        <img src="media/mosaic_1.png" class="big-img">
-    </div>
-    <div class="images">
-        <img src="media/mosaic_2.png" class="big-img">
-    </div>
-    <div class="images">
-        <img src="media/mosaic_3.png" class="big-img">
-    </div>
-    <div class="description">
-        I created three image mosaics by selecting corresponding points between overlapping images, computing homographies, and warping both images onto a shared canvas. Each image was inverse-warped using both nearest-neighbor and bilinear interpolation, with bilinear interpolation producing smoother transitions. To reduce visible seams, I applied simple feathering - generating soft alpha masks and blending overlapping regions through weighted averaging. This approach helps minimize edge artifacts and ensures a more seamless, natural-looking mosaic.
-    </div>
-  </div>
-
-  <h1>Feature Matching for Autostitching</h1>
-
-  <div class="section">
-    <h3>B.1: Harris Corner Detection</h3>
-    <div class="description">
-        Harris corners are visualized on the images, both before and after applying ANMS.
-    </div>
-    <div class="images">
-        <img src="media/harris_no_ams.png">
-        <img src="media/harris_with_ams.png">
-    </div>
-  </div>
-
-  <div class="section">
-    <h3>B.2: Feature Descriptor Extraction</h3>
-    <div class="description">
-        We extract compact, axis-aligned 8x8 descriptors around each Harris corner. Each descriptor is sampled from a larger 40x40 window, then bias/gain normalized (zero mean, unit variance) to reduce lighting effects.
-    </div>
-    <div class="images">
-        <img src="media/feat_desc.png" class="big-img">
-    </div>
-  </div>
-
-  <div class="section">
-    <h3>B.3: Feature Matching</h3>
-    <div class="description">
-        We match features by comparing their 8x8 descriptors and applying Lowe's ratio test: a match is accepted only if the nearest neighbor is significantly closer than the second nearest. This filters out ambiguous pairs and keeps reliable correspondences. Below, we visualize the resulting matches across each image pair.
-    </div>
-    <div class="images">
-        <img src="media/balcony_matched_features.png" class="big-img">
-    </div>
-    <div class="images">
-        <img src="media/everest_matched_features.png" class="big-img">
-    </div>
-    <div class="images">
-        <img src="media/home_matched_features.png" class="big-img">
-    </div>
-  </div>
-
-  <div class="section">
-    <h3>B.4: RANSAC for Robust Homography</h3>
-    <div class="description">
-        We estimate homographies with 4-point RANSAC: repeatedly sample 4 correspondences, solve for H, score by reprojection error to keep a consensus of inliers, then refit H on those inliers for stability. Using the recovered H, we warp and blend images to form panaromas. Below, we show manual vs. automatic stitching side-by-side for several mosaics.
-    </div>
-    <div class="images">
-        <img src="media/balcony_mosaics.png">
-    </div>
-    <div class="images">
-        <img src="media/everest_mosaics.png">
-    </div>
-    <div class="images">
-        <img src="media/home_mosaics.png">
-    </div>
-    <div class="description">
-        Automatic stitching produces cleaner, more consistent panoramas since it removes human alignment errors and optimizes overlaps mathematically. As a result, the final images are smoother and exhibit noticeably less geometric distortion.
     </div>
   </div>
 
