@@ -98,7 +98,7 @@
 <body>
   <a href="https://eldenyap48.github.io/" class="back-link">← Back</a>
 
-  <h1>CS 180 Project 4: </h1>
+  <h1>CS 180 Project 4: Neural Radiance Field!</h1>
 
   <div class="section">
     <h3>Part 0: Calibrating Your Camera and Capturing a 3D Scan</h3>
@@ -106,13 +106,13 @@
       First, I calculated camera intrinsics (K) and distortion coefficients. Next, I did a 3D object scan and calculated the camera poses for each of the images. Finally, I was able to undistort the image and create a dataset. Below are 2 screenshots of my cloud of cameras in Viser showing the camera frustums' poses and images.
     </div>
     <div class="images">
-      <img src="media/viser_0.png">
-      <img src="media/viser_1.png">
+      <img src="media/viser0.png">
+      <img src="media/viser1.png">
     </div>
   </div>
 
   <div class="section">
-    <h3>A.2: Recover Homographies</h3>
+    <h3>Part 1: Fit a Neural Field to a 2D Image</h3>
     <div class="description">
         I implemented the <code>computeH(im1_pts, im2_pts)</code> functions to calculate the homography from the first image to the second
     </div>
