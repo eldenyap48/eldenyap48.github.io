@@ -114,15 +114,12 @@
   <div class="section">
     <h3>Part 1: Fit a Neural Field to a 2D Image</h3>
     <div class="description">
-        I implemented the <code>computeH(im1_pts, im2_pts)</code> functions to calculate the homography from the first image to the second
+        Our model is a coordinate-based neural field that maps 2D pixel coordinates to RGB values. It uses a positional encoding with 10 frequency bands, expanding each (x, y) input to a 42-dimensional vector. This encoded vector is passed through an MLP with three hidden layers, each with width 256 and ReLU activations, followed by a final linear layer and a sigmoid to produce RGB values in the range [0, 1]. The network is trained for 2000 iterations using the Adam optimizer with a learning rate of 1e-2, minimizing MSE over random batches of 10,000 pixels.
     </div>
     <div class="images">
-        <img src="media/balcony_corr.png" class="big-img">
-        <img src="media/balcony_homo.png" class="big-img">
+        <img src="media/fox_training_progression.png" class="big-img">
     </div>
     <div class="images">
-        <img src="media/home_corr.png" class="big-img">
-        <img src="media/home_homo.png" class="big-img">
     </div>
   </div>
 
