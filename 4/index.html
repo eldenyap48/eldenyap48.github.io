@@ -114,12 +114,16 @@
   <div class="section">
     <h3>Part 1: Fit a Neural Field to a 2D Image</h3>
     <div class="description">
-        Our model is a coordinate-based neural field that maps 2D pixel coordinates to RGB values. It uses a positional encoding with 10 frequency bands, expanding each (x, y) input to a 42-dimensional vector. This encoded vector is passed through an MLP with three hidden layers, each with width 256 and ReLU activations, followed by a final linear layer and a sigmoid to produce RGB values in the range [0, 1]. The network is trained for 2000 iterations using the Adam optimizer with a learning rate of 1e-2, minimizing MSE over random batches of 10,000 pixels.
+      Our model is a coordinate-based neural field that maps 2D pixel coordinates to RGB values. It uses a positional encoding with 10 frequency bands, expanding each (x, y) input to a 42-dimensional vector. This encoded vector is passed through an MLP with three hidden layers, each with width 256 and ReLU activations, followed by a final linear layer and a sigmoid to produce RGB values in the range [0, 1]. The network is trained for 2000 iterations using the Adam optimizer with a learning rate of 1e-2, minimizing MSE over random batches of 10,000 pixels.
     </div>
     <div class="images">
-        <img src="media/fox_training_progression.png" class="big-img">
+      <img src="media/fox_training_progression.png" class="big-img">
+    </div>
+    <div class="description">
+      To study how model capacity affects reconstruction quality, we trained four versions of our neural field using two different positional encoding frequencies (1 and 4) and two network widths (16 and 64). We plotted the final reconstructions in a 2x2 grid. Lower max frequency and smaller hidden width significantly limit the model’s ability to represent fine details, producing blurry or overly smooth images, while higher frequencies and wider layers produce sharper, more accurate reconstructions.
     </div>
     <div class="images">
+      <img src="media/fox_grid.png" class="big-img">
     </div>
   </div>
 
