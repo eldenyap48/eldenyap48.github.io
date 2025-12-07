@@ -191,7 +191,9 @@
     </div>
     <div class="images">
       <img src="media/sdedit_campanile.png" class="big-img">
+      <br\>
       <img src="media/sdedit_ocean.png" class="big-img">
+      <br\>
       <img src="media/sdedit_church.png" class="big-img">
     </div>
   </div>
@@ -213,7 +215,9 @@
     </div>
     <div class="images">
       <img src="media/inpainted_campanile.png" class="big-img">
+      <br\>
       <img src="media/inpainted_ocean.png" class="big-img">
+      <br\>
       <img src="media/inpainted_church.png" class="big-img">
     </div>
   </div>
@@ -225,8 +229,31 @@
     </div>
     <div class="images">
       <img src="media/text_conditioned_campanile.png" class="big-img">
+      <br\>
       <img src="media/text_conditioned_ocean.png" class="big-img">
+      <br\>
       <img src="media/text_conditioned_church.png" class="big-img">
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>Part 1.8: Visual Anagrams</h3>
+    <div class="description">
+      I implemented visual anagrams using a dual-prompt diffusion process, where an image is guided by two different text conditions depending on its orientation. By denoising both the original and a flipped version of the image with separate prompts and averaging their noise estimates, the model produces a single image that reveals distinct semantic content when viewed upright versus upside down. This demonstrates how diffusion models can be used not only for generation, but also for creating structured optical illusions driven by language.
+    </div>
+    <div class="images">
+      <img src="media/campfire.png">
+      <img src="media/castle.png">
+      <img src="media/skull.png">
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>Part 1.9: Hybrid Images</h3>
+    <div class="description">
+      I implemented hybrid image generation using factorized diffusion by combining low-frequency structure from one text prompt with high-frequency details from another. This was done by computing two separate CFG noise estimates and blending them using Gaussian low-pass and high-pass filtering. The resulting images exhibit dual perception: one interpretation emerges at a distance while another appears up close, demonstrating how diffusion models can manipulate semantic content across frequency bands.
+    </div>
+    <div class="images">
     </div>
   </div>
 
