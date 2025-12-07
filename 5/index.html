@@ -174,5 +174,15 @@
     </div>
   </div>
 
+  <div class="section">
+    <h3>Part 1.6: Classifier-Free Guidance (CFG)</h3>
+    <div class="description">
+      I implemented classifier-free guidance (CFG) to significantly improve image quality by combining conditional and unconditional noise predictions during sampling. Using a guidance scale of γ = 7 with the prompt “a high quality photo”, the generated images became noticeably sharper, more coherent, and more semantically aligned with the text compared to unguided sampling. This demonstrates how CFG effectively trades off diversity for higher visual fidelity and stronger prompt adherence.
+    </div>
+    <div class="images">
+      <img src="media/cfg_samples.png" class="big-img">
+    </div>
+  </div>
+
 </body>
 </html>
