@@ -196,5 +196,38 @@
     </div>
   </div>
 
+  <div class="section">
+    <h3>Part 1.7.1: Editing Hand-Drawn and Web Images</h3>
+    <div class="description">
+      I applied the image-to-image diffusion editing process to both web-sourced photographs and hand-drawn sketches, demonstrating how non-photorealistic inputs can be projected onto the natural image manifold. By varying the noise level, I generated a progression of edits that transform abstract drawings and stylized images into increasingly realistic outputs. This highlights the model's ability to bridge the gap between human sketches and photorealistic imagery through controlled diffusion-based editing.
+    </div>
+    <div class="images">
+      <img src="media/sdedit_labubu.png" class="big-img">
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>Part 1.7.2: Inpainting</h3>
+    <div class="description">
+      I implemented a diffusion-based inpainting pipeline that reconstructs missing regions of an image using a binary mask and classifier-free guidance. By constraining unmasked regions to remain faithful to the original image at every denoising step, the model realistically hallucinates new content only within the selected region. This method was applied to the Campanile and two custom examples, demonstrating precise, context-aware image completion driven by diffusion priors.
+    </div>
+    <div class="images">
+      <img src="media/inpainted_campanile.png" class="big-img">
+      <img src="media/inapinted_ocean.png" class="big-img">
+      <img src="media/inpainted_church.png" class="big-img">
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>Part 1.7.3: Text-Conditional Image-to-image Translation</h3>
+    <div class="description">
+    </div>
+    <div class="images">
+      <img src="media/inpainted_campanile.png" class="big-img">
+      <img src="media/inapinted_ocean.png" class="big-img">
+      <img src="media/inpainted_church.png" class="big-img">
+    </div>
+  </div>
+
 </body>
 </html>
