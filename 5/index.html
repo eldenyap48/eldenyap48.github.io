@@ -148,5 +148,21 @@
     </div>
   </div>
 
+  <div class="section">
+    <h3>Part 1.4: Iterative Denoising</h3>
+    <div class="description">
+      Using a strided diffusion schedule with an initial noise level of i_start = 10, I implemented the full iterative denoising process and visualized the progressive refinement of the Campanile image at regular intervals. The results clearly show how repeated diffusion steps gradually recover structure from heavy noise, producing a high-quality final reconstruction.
+    </div>
+    <div class="images">
+      <img src="media/iterative_denoise_intermediates.png" class="big-img">
+    </div>
+    <div class="images">
+      <img src="media/denoise_comparisons.png" class="big-img">
+    </div>
+    <div class="description">
+      Both single-step denoising and Gaussian blur baselines perform significantly worse, highlighting the importance of multi-step diffusion for high-fidelity image restoration.
+    </div>
+  </div>
+
 </body>
 </html>
