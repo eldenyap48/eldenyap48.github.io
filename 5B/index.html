@@ -162,5 +162,38 @@
     </div>
   </div>
 
+  <div class="section">
+    <h3>Part 2.1: Training a Flow Matching Model and Adding Time Conditioning to UNet</h3>
+    <div class="description">
+      We move beyond single-step denoising by training a flow matching model that iteratively transforms pure noise into clean data. In this setup, we construct intermediate states by linearly interpolating between a noise sample x₀ ~ N(0, I) and a clean image x₁, and train the UNet to predict the corresponding flow field u(xₜ, t) = x₁ - x₀ using an L2 loss. To enable the model to adapt its predictions across different interpolation times, we condition the UNet on the scalar timestep t by embedding it with small fully connected blocks and injecting the resulting features into intermediate layers via feature-wise modulation. This time-conditioned UNet learns a continuous vector field that can be integrated from noise to data, allowing for iterative and more effective generative denoising.
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>Part 2.2: Training the UNet</h3>
+    <div class="description">
+      We train the time-conditioned UNet by repeatedly sampling a clean image from the training set, drawing a random timestep t in [0,1], and interpolating between pure noise and the clean image to construct a noisy input x_t. The network is trained to predict the corresponding flow x_1 - x_0 at x_t using an L2 loss, allowing it to learn how the image should evolve over time from noise to data. This process is applied across many images and timesteps using the MNIST training set with shuffled batches, and training progress is monitored by tracking the loss over the course of training.
+    </div>
+    <div class="images">
+      <img src="media/training_loss_fm.png" class="big-img">
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>Part 2.3: Sampling from the UNet</h3>
+    <div class="description">
+      After training, we generate samples by iteratively applying the learned flow field starting from pure Gaussian noise. Beginning with an initial noise sample, we repeatedly update the image using the UNet’s predicted flow at evenly spaced timesteps, gradually moving the sample toward the data distribution. Although early samples may appear noisy or poorly formed, the digit structure becomes increasingly clear as training progresses, and by later epochs the model produces legible MNIST-like digits through this iterative denoising process.
+    </div>
+    <div class="images">
+      <img src="media/uncond_fm_epoch1.png" class="big-img">
+    </div>
+    <div class="images">
+      <img src="media/uncond_fm_epoch5.png" class="big-img">
+    </div>
+    <div class="images">
+      <img src="media/uncond_fm_epoch10.png" class="big-img">
+    </div>
+  </div>
+
 </body>
 </html>
