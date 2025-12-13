@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>CS 180 Project 5 Part A: The Power of Diffusion Models!</title>
+  <title>CS 180 Project 5 Part B: Flow Matching from Scratch!</title>
   <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
 
   <style>
@@ -98,168 +98,38 @@
 <body>
   <a href="https://eldenyap48.github.io/" class="back-link">← Back</a>
 
-  <h1>CS 180 Project 5 Part A: The Power of Diffusion Models!</h1>
+  <h1>CS 180 Project 5 Part B: Flow Matching from Scratch!</h1>
 
   <div class="section">
-    <h3>Part 0: Setup</h3>
+    <h3>Part 1.1: Implementing a Single-Step Denoising UNet</h3>
     <div class="description">
-        I designed a diverse set of creative text prompts and generated their corresponding prompt embeddings for use with the DeepFloyd IF text-to-image diffusion model. To ensure reproducibility across all experiments, I fixed the seed to 380 and consistently used it throughout the project. The following images were generated with the number of inference steps set to 20.
-    </div>
-    <div class="images">
-      <img src="media/prompts_20_steps.png" class="big-img">
-    </div>
-    <div class="description">
-        The following images were generated with the number of inference steps set to 40.
-    </div>
-    <div class="images">
-      <img src="media/prompts_40_steps.png" class="big-img">
-    </div>
-    <div class="description">
-        The generated images closely matched the semantic content of the text prompts, with clearer structure and finer details emerging as the number of inference steps increased. When using a lower number of steps, the outputs were faster to generate but appeared noisier and less coherent, while higher step counts produced sharper, more visually consistent results that better reflected the intended prompts.
-    </div>
-
-  <div class="section">
-    <h3>Part 1.1: Implementing the Forward Process</h3>
-    <div class="description">
-      I implemented the forward (noising) process of a diffusion model, which progressively corrupts a clean image by adding Gaussian noise over time. Using a resized image of the Berkeley Campanile, I applied increasing noise levels at timesteps 250, 500, and 750 to visualize how structure is gradually destroyed as the diffusion process progresses.
-    </div>
-    <div class="images">
-      <img src="media/noisy_campanile.png" class="big-img">
+      We implement the denoiser as a compact U-Net with an encoder-decoder architecture and skip connections. The encoder consists of a convolutional block followed by two downsampling blocks that reduce the input from 28x28 to a 7x7 bottleneck, which is flattened to a 1x1 latent representation and then unflattened back to 7x7. The decoder mirrors the encoder using upsampling blocks and channel-wise concatenation with corresponding encoder features to preserve spatial detail, and a final 3x3 convolution maps the features back to the original image shape.
     </div>
   </div>
 
   <div class="section">
-    <h3>Part 1.2: Classical Denoising</h3>
+    <h3>Part 1.2: Using the UNet to Train a Denoiser</h3>
     <div class="description">
-      I applied classical Gaussian blur filtering to noisy versions of the Berkeley Campanile at timesteps 250, 500, and 750. The results show that while Gaussian blurring can reduce high-frequency noise at lower noise levels, it quickly fails to recover meaningful structure as noise increases, producing overly smooth and distorted images.
+      We train the UNet as a denoiser by minimizing an L2 loss that encourages the network to map a noisy image z back to its clean target x. For each training batch, we generate supervision pairs (z, x) by sampling Gaussian noise ε ~ N(0, I) and forming z = x + sigma ε for different noise levels sigma. As sigma increases from 0 to 1, the input becomes progressively noisier and the digit structure becomes harder to distinguish, which we verify by visualizing examples across the specified sigma values.
     </div>
     <div class="images">
-      <img src="media/classical_denoisy.png" class="big-img">
+      <img src="media/increasing_sigmas.png" class="big-img">
     </div>
   </div>
 
   <div class="section">
-    <h3>Part 1.3: One-Step Denoising</h3>
+    <h3>Part 1.2.1: Training</h3>
     <div class="description">
-      Using a pretrained diffusion UNet from DeepFloyd IF, I performed one-step denoising on noisy versions of the Campanile at timesteps 250, 500, and 750. The model successfully predicted the noise present in each image and enabled partial reconstruction of the original signal in a single reverse step. While fine details remain degraded at higher noise levels, the results clearly demonstrate the model’s ability to recover meaningful structure far beyond what classical denoising methods can achieve.
+      We train the UNet denoiser on MNIST by adding Gaussian noise with a fixed noise level sigma = 0.5 to clean images and optimizing an L2 loss between the denoised output and the original image. During training, noise is applied on-the-fly each time a batch is fetched so the model sees different noisy realizations across epochs, improving generalization. We use the MNIST training set with shuffled batches, train for five epochs using the Adam optimizer, and monitor convergence by plotting the training loss over iterations. We report the training loss curve and visualize denoised results on the test set after the first and fifth epochs, comparing the clean input, noisy input, and the model's output.
     </div>
     <div class="images">
-      <img src="media/one_step_denoise.png" class="big-img">
-    </div>
-  </div>
-
-  <div class="section">
-    <h3>Part 1.4: Iterative Denoising</h3>
-    <div class="description">
-      Using a strided diffusion schedule with an initial noise level of i_start = 10, I implemented the full iterative denoising process and visualized the progressive refinement of the Campanile image at regular intervals. The results clearly show how repeated diffusion steps gradually recover structure from heavy noise, producing a high-quality final reconstruction.
+      <img src="media/training_loss_one_step.png" class="big-img">
     </div>
     <div class="images">
-      <img src="media/iterative_denoise_intermediates.png" class="big-img">
+      <img src="media/one_step_epoch1.png" class="big-img">
     </div>
     <div class="images">
-      <img src="media/denoise_comparisons.png" class="big-img">
-    </div>
-    <div class="description">
-      Both single-step denoising and Gaussian blur baselines perform significantly worse, highlighting the importance of multi-step diffusion for high-fidelity image restoration.
-    </div>
-  </div>
-
-  <div class="section">
-    <h3>Part 1.5: Diffusion Model Sampling</h3>
-    <div class="description">
-      By initializing the model with pure Gaussian noise and setting i_start = 0, I used the iterative diffusion process to generate images entirely from scratch. The model produces recognizable and semantically meaningful images from random noise, demonstrating the generative power of diffusion models.
-    </div>
-    <div class="images">
-      <img src="media/diffusion_model_samples.png" class="big-img">
-    </div>
-  </div>
-
-  <div class="section">
-    <h3>Part 1.6: Classifier-Free Guidance (CFG)</h3>
-    <div class="description">
-      I implemented classifier-free guidance (CFG) to significantly improve image quality by combining conditional and unconditional noise predictions during sampling. Using a guidance scale of γ = 7 with the prompt “a high quality photo”, the generated images became noticeably sharper, more coherent, and more semantically aligned with the text compared to unguided sampling. This demonstrates how CFG effectively trades off diversity for higher visual fidelity and stronger prompt adherence.
-    </div>
-    <div class="images">
-      <img src="media/cfg_samples.png" class="big-img">
-    </div>
-  </div>
-
-  <div class="section">
-    <h3>Part 1.7: Image-to-Image Translation</h3>
-    <div class="description">
-      Using classifier-free guidance, I applied image-to-image translation via the SDEdit process to progressively edit a real photograph by injecting controlled amounts of noise and denoising it back toward the data manifold. By varying the starting noise level, I generated a smooth spectrum of edits that transition from highly altered to nearly identical to the original image. This demonstrates how diffusion models can perform controllable, structure-preserving image edits rather than only generating images from pure noise.
-    </div>
-    <div class="images">
-      <img src="media/sdedit_campanile.png" class="big-img">
-    </div>
-    <div class="images">
-      <img src="media/sdedit_ocean.png" class="big-img">
-    </div>
-    <div class="images">
-      <img src="media/sdedit_church.png" class="big-img">
-    </div>
-  </div>
-
-  <div class="section">
-    <h3>Part 1.7.1: Editing Hand-Drawn and Web Images</h3>
-    <div class="description">
-      I applied the image-to-image diffusion editing process to both web-sourced photographs and hand-drawn sketches, demonstrating how non-photorealistic inputs can be projected onto the natural image manifold. By varying the noise level, I generated a progression of edits that transform abstract drawings and stylized images into increasingly realistic outputs. This highlights the model's ability to bridge the gap between human sketches and photorealistic imagery through controlled diffusion-based editing.
-    </div>
-    <div class="images">
-      <img src="media/sdedit_labubu.png" class="big-img">
-    </div>
-  </div>
-
-  <div class="section">
-    <h3>Part 1.7.2: Inpainting</h3>
-    <div class="description">
-      I implemented a diffusion-based inpainting pipeline that reconstructs missing regions of an image using a binary mask and classifier-free guidance. By constraining unmasked regions to remain faithful to the original image at every denoising step, the model realistically hallucinates new content only within the selected region. This method was applied to the Campanile and two custom examples, demonstrating precise, context-aware image completion driven by diffusion priors.
-    </div>
-    <div class="images">
-      <img src="media/inpainted_campanile.png" class="big-img">
-    </div>
-    <div class="images">
-      <img src="media/inpainted_ocean.png" class="big-img">
-    </div>
-    <div class="images">
-      <img src="media/inpainted_church.png" class="big-img">
-    </div>
-  </div>
-
-  <div class="section">
-    <h3>Part 1.7.3: Text-Conditional Image-to-image Translation</h3>
-    <div class="description">
-      I extended image-to-image translation by incorporating text conditioning to guide the diffusion process with semantic control. By replacing the neutral prompt with a descriptive textual prompt, the model gradually transforms the original image to reflect both the input structure and the target concept across increasing noise levels. The results demonstrate smooth, controlled transitions where visual content progressively aligns with the specified prompt while preserving the underlying geometry of the original image.
-    </div>
-    <div class="images">
-      <img src="media/text_conditioned_campanile.png" class="big-img">
-    </div>
-    <div class="images">
-      <img src="media/text_conditioned_ocean.png" class="big-img">
-    </div>
-    <div class="images">
-      <img src="media/text_conditioned_church.png" class="big-img">
-    </div>
-  </div>
-
-  <div class="section">
-    <h3>Part 1.8: Visual Anagrams</h3>
-    <div class="description">
-      I implemented visual anagrams using a dual-prompt diffusion process, where an image is guided by two different text conditions depending on its orientation. By denoising both the original and a flipped version of the image with separate prompts and averaging their noise estimates, the model produces a single image that reveals distinct semantic content when viewed upright versus upside down. This demonstrates how diffusion models can be used not only for generation, but also for creating structured optical illusions driven by language.
-    </div>
-    <div class="images">
-      <img src="media/campfire.png">
-      <img src="media/castle.png">
-      <img src="media/skull.png">
-    </div>
-  </div>
-
-  <div class="section">
-    <h3>Part 1.9: Hybrid Images</h3>
-    <div class="description">
-      I implemented hybrid image generation using factorized diffusion by combining low-frequency structure from one text prompt with high-frequency details from another. This was done by computing two separate CFG noise estimates and blending them using Gaussian low-pass and high-pass filtering. The resulting images exhibit dual perception: one interpretation emerges at a distance while another appears up close, demonstrating how diffusion models can manipulate semantic content across frequency bands.
-    </div>
-    <div class="images">
+      <img src="media/one_step_epoch5.png" class="big-img">
     </div>
   </div>
 
