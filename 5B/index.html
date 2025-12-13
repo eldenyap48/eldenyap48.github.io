@@ -133,5 +133,34 @@
     </div>
   </div>
 
+  <div class="section">
+    <h3>Part 1.2.2: Out-of-Distribution Testing</h3>
+    <div class="description">
+      We evaluate the denoiser's robustness by testing it on noise levels different from the one used during training. Although the model was trained only with sigma = 0.5, we apply it to test images corrupted with a range of noise levels sigma ∈ [0.0, 0.2, 0.4, 0.5, 0.6, 0.8, 1.0] to assess its out-of-distribution performance. By keeping the same underlying image and varying sigma, we observe how denoising quality degrades as the noise level moves further away from the training distribution.
+    </div>
+    <div class="images">
+      <img src="media/ood_testing.png">
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>Part 1.2.3: Denoising Pure Noise</h3>
+    <div class="description">
+      We further explore denoising as a generative process by training the UNet to denoise pure Gaussian noise, where the input consists solely of samples ε ~ N(0, I) with no underlying clean image structure. Using the same training setup as before, the model is trained for five epochs and evaluated after the first and fifth epochs.
+    </div>
+    <div class="images">
+      <img src="media/training_loss_one_step.png" class="big-img">
+    </div>
+    <div class="images">
+      <img src="media/denoise_pure_noise_epoch1.png" class="big-img">
+    </div>
+    <div class="images">
+      <img src="media/denoise_pure_noise_epoch5.png" class="big-img">
+    </div>
+    <div class="description">
+      When sampling from this model, the generated outputs tend to resemble blurry or averaged digit-like patterns rather than sharp, diverse digits. This behavior arises because, under an MSE loss, the model learns to predict the conditional mean of the training data; when given pure noise with no informative signal, the optimal prediction collapses toward an average over the training distribution, which corresponds to a centroid-like representation of MNIST digits.
+    </div>
+  </div>
+
 </body>
 </html>
