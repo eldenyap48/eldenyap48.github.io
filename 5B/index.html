@@ -226,6 +226,15 @@
     <div class="images">
       <img src="media/cond_fm_epoch10.png" class="big-img">
     </div>
+    <div class="description">
+      To eliminate the exponential learning rate scheduler, we instead used a fixed learning rate of 1e-3 throughout training, reduced from the original 1e-2. This smaller constant learning rate provided more stable optimization and prevented overly large updates in later epochs, allowing the model to converge smoothly without explicit decay. With this change, the class-conditioned UNet achieved comparable sample quality and convergence behavior to the scheduler-based setup, showing that a carefully chosen constant learning rate can effectively replace the learning rate scheduler.
+    </div>
+    <div class="images">
+      <img src="media/training_loss_fm_cond_no_scheduler.png" class="big-img">
+    </div>
+    <div class="images">
+      <img src="media/cond_fm_epoch10_no_scheduler.png" class="big-img">
+    </div>
   </div>
 
 </body>
