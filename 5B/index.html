@@ -195,5 +195,38 @@
     </div>
   </div>
 
+  <div class="section">
+    <h3>Part 2.4: Sampling from the UNet</h3>
+    <div class="description">
+      We extend the time-conditioned UNet by additionally conditioning it on the digit class to gain finer control over the generated outputs. The class label is encoded as a one-hot vector and embedded using separate fully connected blocks, analogous to the time embeddings, and injected into intermediate layers of the network through feature-wise modulation. To enable classifier-free guidance at sampling time, we randomly drop the class conditioning during training by setting the class vector to zero with a small probability, allowing the model to learn both conditional and unconditional behaviors. This combined conditioning on time and class improves sample quality and enables targeted generation of specific digits.
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>Part 2.5: Training the UNet</h3>
+    <div class="description">
+      Training the class-conditioned UNet closely follows the time-conditioned setup, with the addition of a class conditioning signal. For each iteration, we sample a clean image and its corresponding label, encode the label as a one-hot vector, and randomly drop this conditioning with a small probability to support classifier-free guidance. We then sample a random timestep, interpolate between noise and the clean image to obtain x_t, and optimize the network to predict the flow using an L2 loss. This process allows the model to learn both conditional and unconditional behaviors while converging to a class-aware flow field over training.
+    </div>
+    <div class="images">
+      <img src="media/training_loss_fm_cond.png" class="big-img">
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>Part 2.6: Sampling from the UNet</h3>
+    <div class="description">
+      We generate samples from the class-conditioned UNet using classifier-free guidance to encourage alignment with the specified digit class. Starting from pure Gaussian noise, we iteratively update the sample by combining the model’s conditional and unconditional flow predictions, scaled by a guidance factor γ = 5.0. Early in training the generated digits are noisy and ambiguous, but as training progresses the samples become sharper and more class-consistent, with distinct digits emerging by later epochs. This guided sampling procedure improves both visual quality and controllability compared to unconditional generation.
+    </div>
+    <div class="images">
+      <img src="media/cond_fm_epoch1.png" class="big-img">
+    </div>
+    <div class="images">
+      <img src="media/cond_fm_epoch5.png" class="big-img">
+    </div>
+    <div class="images">
+      <img src="media/cond_fm_epoch10.png" class="big-img">
+    </div>
+  </div>
+
 </body>
 </html>
